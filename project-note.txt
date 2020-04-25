@@ -1,0 +1,6 @@
+1. .obj file loader
+    - need Eigen
+    - load mesh, constrain, force, initial environment
+        what do I need for model loader --> read mpm?
+2. main mpm algorithm
+3. create obj file and show in meshlab
