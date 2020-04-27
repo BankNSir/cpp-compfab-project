@@ -3,4 +3,5 @@
     - load mesh, constrain, force, initial environment
         what do I need for model loader --> read mpm?
 2. main mpm algorithm
+    create a simulation environment particle and cell class
 3. create obj file and show in meshlab

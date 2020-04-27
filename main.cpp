@@ -2,32 +2,18 @@
 #include <vector>
 #include <string>
 
-#include "Eigen/Dense"
-#include "tiny_obj_loader.h"
+#include "Eigen/Dense"       // for linear algebra operation
+// #include "tiny_obj_loader.h"    // load and save obj files
 
-using namespace std;
 
 int main()
 {
-    vector<string> msg {"Hello", "C++", "World", "from", "VS Code", "and the C++ extension!"};
 
-    for (const string& word : msg)
-    {
-        cout << word << " ";
-    }
-    cout << endl;
-    int x = 10;
-    cout << x << endl;
-    cout << x;
-    cout << " ";
-    cout << endl;
+    Eigen::MatrixXd test_matrix(2, 2);
+    test_matrix(0, 0) = 3;
+    test_matrix(0, 1) = 2;
+    test_matrix(1, 0) = 2;
+    test_matrix(1, 1) = 3;
+    std::cout << test_matrix << std::endl;
 
-    Eigen::MatrixXd m(2, 2);
-    m(0, 0) = 3;
-    m(0, 1) = 2;
-    m(1, 0) = 2;
-    m(1, 1) = 3;
-    cout << m << endl;
-
-    // tinyobj::ObjReader()
 }
