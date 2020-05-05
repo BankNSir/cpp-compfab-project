@@ -1,5 +1,5 @@
-#include "tiny_obj_loader.h"
-#include "obj_writer.h"
+#include "../../myincludes/tiny_obj_loader.h"
+#include "../../myincludes/obj_writer.h"
 #include <vector>
 #include <iostream>
 

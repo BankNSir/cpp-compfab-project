@@ -1,6 +1,8 @@
 all:
-	g++ tiny_obj_loader_example.cpp tiny_obj_loader.cc obj_writer.cc -o tiny_obj_loader
-	./tiny_obj_loader
+	g++ tiny_obj_loader_example.cpp ../../myincludes/tiny_obj_loader.cpp \
+	../../myincludes/obj_writer.cpp -o tiny_obj_loader.out
+	./tiny_obj_loader.out
 debug:
-	g++ -g tiny_obj_loader_example.cpp tiny_obj_loader.cc obj_writer.cc -o tiny_obj_loader
-	./tiny_obj_loader
+	g++ -g tiny_obj_loader_example.cpp ../../myincludes/tiny_obj_loader.cpp \
+	../../myincludes/obj_writer.cpp -o tiny_obj_loader.out
+	./tiny_obj_loader.out
