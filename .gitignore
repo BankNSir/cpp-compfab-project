@@ -1,3 +1,5 @@
 /Eigen
 /tinyobjloader-master
 /*.obj
+selected_class.cpp
+main
