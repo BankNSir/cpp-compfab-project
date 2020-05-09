@@ -1,5 +1,4 @@
-// rignt now finished particle constructor
-// Next test particle and P2G
+// ParticleToGridCoord still doesn't handle boundary point -1 and 33
 
 #include <cmath>            // for floor()
 #include <cstdlib>          // for rand()
@@ -16,11 +15,18 @@ using Vec2 = Eigen::Vector2d;
 using Mat2 = Eigen::Matrix2d;
 // using Eigen::Matrix2d = Mat2;
 
+// number of grid boxes
+const int N_GRID_BOX = 32;
+// width of each grid boxes
+const int dx = 1/N_GRID_BOX;
+// number of Grid lines = number of box + 1
+Grid GRID_LINE[N_GRID_BOX + 1][N_GRID_BOX + 1];
+
 struct Particle
 {
-    // velocity waiting for eigen matrix vector 2x2
+    // velocity waiting for eigen matrix vector 2x1
     Vec2 velocity;
-    // position vector 2x2
+    // position vector 2x1
     Vec2 position;
     // deformation gradient matrix 2x2
     Mat2 F;
@@ -52,12 +58,16 @@ struct Grid
 // set particle data pass by reference -> I want to change particles without returning it
 void initialize(std::vector<Particle> &particles, const std::vector<Vec2> &positions)
 {
-    int i = 0;
-    for (auto &p: particles)
+    for (int index = 0; index < positions.size(); index++)
     {
-        p.velocity = positions[i];
-        i++;
+        // Particle p = Particle(positions[index]);
+        particles.push_back(Particle(positions[index]));
     }
+    // for (auto &p: particles)
+    // {
+    //     p.position = positions[i];
+    //     i++;
+    // }
 }
 
 // This function create particle of Box bounding by bottom_left and top_right
@@ -103,6 +113,41 @@ std::vector<Vec2> createBox(Vec2 bottom_left, Vec2 top_right, double particle_sp
 // }
 
 
+
+
+
+// pos coord in [0, 1)
+// find which grid are in this particle kernel 
+Vec2* ParticleToGridCoord(Particle particle)
+{
+    Vec2 *index = new Vec2[9];
+
+    // pos [0, 1)
+    // which box this particle in
+    Vec2 grid_box_coord = particle.position * N_GRID_BOX;     //Vec20.5 * 32
+        // if grid box in [0.5, 1.5) return 0 ans so onnn
+    // DEBUG: std::cout << "grid_box_coord: " << grid_box_coord << std::endl;
+
+    // pos coord to bottomleft grid line coords
+    Vec2 tmp_grid_box_coord = grid_box_coord - Vec2(0.5, 0.5);
+    // base_coord(x, y)
+    Vec2 base_coord = Vec2(floor(tmp_grid_box_coord(0)), floor(tmp_grid_box_coord(1)));
+
+    // set index3x3 from base_coord
+    int count = 0;
+    for (int i = 0; i <= 2; i++)
+    {
+        for (int j = 0; j <= 2; j++)
+        {
+            index[count] = base_coord + Vec2(i, j); 
+            count++;
+        }
+    }
+
+    return index;
+}
+
+
 int main()
 {
 
@@ -110,18 +155,17 @@ int main()
 
 
     std::vector<Particle> particles;
-    std::vector<Vec2> box = createBox(Vec2(-1, -1), Vec2(1, 1), 0.1);
+    std::vector<Vec2> boxCoords = createBox(Vec2(-1, -1), Vec2(1, 1), 0.1);
 
-    particles.assign(box.begin(), box.end());
+    // particles.assign(box.begin(), box.end());
 
 
-    for (auto it = particles.begin(); it != particles.end(); it++)
-    {
-        std::cout << (*it).position << std::endl;
-    }
+    // for (auto it = particles.begin(); it != particles.end(); it++)
+    // {
+    //     std::cout << (*it).position << std::endl;
+    // }
+
     
-    // finished assign a box to particle position
-
 
     // main program
     
@@ -129,10 +173,26 @@ int main()
     // So i need to use eigen for vector and matrix: CLEAR
     
     // createBox 
-    // initialize(particles,) 
+    // initialize(particles,) : CLEAR
+    initialize(particles, boxCoords);
+    // DEBUG
+    // std::cout << "B4 loop";
+    // for (int i = 0; i < particles.size(); i++)
+    // {
+    //     std::cout << particles[i].position << std::endl;
+    // }
+
 
     // sendinfo from particle to grid
     // particleToGrid()
+
+    // correct caveat: 0, 0 return -1, -1
+    for (int i = 0; i < 9; i++)
+    {
+        Vec2 *gridCoords = ParticleToGridCoord(Particle(Vec2(0/N_GRID_BOX, 0/N_GRID_BOX)));
+        std::cout << *(gridCoords + i) << std::endl;
+    }
+
 
     // update grid info
     // gridUpdate()
