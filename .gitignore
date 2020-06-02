@@ -1,7 +1,6 @@
 *.obj
 *.out
 *.mtl
-/Eigen
 /tinyobjloader-master
 selected_class.cpp
 deleted_function.cpp

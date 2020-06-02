@@ -332,7 +332,7 @@ int main()
 
     std::cout << "Calculating Simulation... " << std::endl;
     // dt = 1e-4
-    for (int i = 0; i < 3000; i++) {
+    for (int i = 0; i < 600; i++) {
         AdvanceSimulation(particles);
     }
 
